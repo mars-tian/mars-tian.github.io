@@ -10,7 +10,7 @@
   
   <title>
     
-      test | Mars
+      test comment | Mars
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -144,8 +144,8 @@
 </header>
 
     <div id="article-banner">
-  <h2>test</h2>
-  <p class="post-date">2019-09-20</p>
+  <h2>test comment</h2>
+  <p class="post-date">2019-09-23</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
   </div>
@@ -153,10 +153,7 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h5 id="引用-vs-指针"><a href="#引用-vs-指针" class="headerlink" title="引用 vs 指针"></a>引用 vs 指针</h5><p>complier不为引用分配内存，所以引用不能为空，而且也不能修改引用对象</p>
-<p>指针可以不初始化</p>
-<p>优点：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">int</span>* p = &amp;a; <span class="comment">// 定义了指针p 并把它指向a的地址</span></span><br><span class="line"><span class="keyword">int</span> &amp;b = a;  <span class="comment">// b是a的引用</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; &amp;a &lt;&lt; <span class="built_in">endl</span>;  <span class="comment">//对对象取地址</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; *p &lt;&lt; <span class="built_in">endl</span>;  <span class="comment">//5 *是解引用</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; p &lt;&lt; <span class="built_in">endl</span>;  <span class="comment">//0x7ffeefbff604</span></span><br></pre></td></tr></table></figure></section>
+    <section class="markdown-content"></section>
     <!-- Tags START -->
     
     <!-- Tags END -->
@@ -165,20 +162,13 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2019/09/20/hello-world/">
+      <a class="nav-left" href="/2019/09/20/test/">
         <span class="nav-arrow">← </span>
         
-          Hello World
+          test
         
       </a>
     
-    
-      <a class="nav-right" href="/2019/09/23/test-comment/">
-        
-          test comment
-        
-        <span class="nav-arrow"> →</span>
-      </a>
     
   </div>
 
@@ -224,7 +214,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#引用-vs-指针"><span class="toc-nav-text">引用 vs 指针</span></a></li></ol>
+      <ol class="nav">none</ol>
     
   </div>
 </aside>
@@ -234,7 +224,7 @@
 
 <script>
   (function () {
-    var url = 'http://yoursite.com/2019/09/20/test/';
+    var url = 'http://yoursite.com/2019/09/23/test-comment/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
@@ -296,7 +286,7 @@
     var gitmentConfig = "mars-tian";
     if (gitmentConfig !== 'undefined') {
       var gitment = new Gitment({
-        id: "test",
+        id: "test comment",
         owner: "mars-tian",
         repo: "mars-tian.github.io",
         oauth: {

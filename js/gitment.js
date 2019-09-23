@@ -2896,10 +2896,8 @@ function renderComments(_ref2, instance) {
   if (error) {
     var errorBlock = document.createElement('div');
     errorBlock.className = 'gitment-comments-error';
-    console.log('comments error');
 
-    if (error === _constants.NOT_INITIALIZED_ERROR ) {
-      console.log('comments error2');
+    if (error === _constants.NOT_INITIALIZED_ERROR && user.login && user.login.toLowerCase() === 'tianchenjiang') {
       var initHint = document.createElement('div');
       var initButton = document.createElement('button');
       initButton.className = 'gitment-comments-init-btn';
@@ -3534,7 +3532,7 @@ var Gitment = function () {
           repo = this.repo;
 
       return _utils.http.get('/repos/' + owner + '/' + repo + '/issues', {
-        creator: owner,
+        creator: 'tianchenjiang', //改成自己
         labels: id
       }).then(function (issues) {
         if (!issues.length) return Promise.reject(_constants.NOT_INITIALIZED_ERROR);

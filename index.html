@@ -147,14 +147,19 @@
   
     <article class="article-card">
       <h2 class="article-head">
-        <a href="/2019/10/23/C-数组总结/">C++数组总结</a>
+        <a href="/2019/10/23/C-数组总结/">C++ 数组 & 指针</a>
       </h2>
       <p class="article-date">October 23, 2019</p>
       
       <div class="article-summary">
         
-          数组数组名代表第一个元素的位置
-1234int a[10] = &#123;1&#125;;cout &lt;&lt; &amp;a[0] &lt;&lt; endl;   // 第一个元素位置cout &lt;&lt; a &lt;&lt; endl;       // 数组名等价于第一个 ...
+          C++ 数组 &amp; 指针
+​    注意⚠️：
+
+数组名代表第一个元素的位置
+char(*) [2] 是一种数组类型，表示指向每个数组有两个元素的数组指针
+往char类型存入字符串的话，在字符串末尾加上\0  作为终止符方便下次取用
+如果结构体有元素是char*/char[] 类型，则 ...
         
       </div>
       <a class="more" href="/2019/10/23/C-数组总结/">Read more</a>

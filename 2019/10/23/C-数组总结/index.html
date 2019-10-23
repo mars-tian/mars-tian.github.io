@@ -10,7 +10,7 @@
   
   <title>
     
-      test | Mars
+      C++数组总结 | Mars
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -144,8 +144,8 @@
 </header>
 
     <div id="article-banner">
-  <h2>test</h2>
-  <p class="post-date">2019-09-20</p>
+  <h2>C++数组总结</h2>
+  <p class="post-date">2019-10-23</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
   </div>
@@ -153,10 +153,22 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h5 id="引用-vs-指针"><a href="#引用-vs-指针" class="headerlink" title="引用 vs 指针"></a>引用 vs 指针</h5><p>complier不为引用分配内存，所以引用不能为空，而且也不能修改引用对象</p>
-<p>指针可以不初始化</p>
-<p>优点：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">int</span>* p = &amp;a; <span class="comment">// 定义了指针p 并把它指向a的地址</span></span><br><span class="line"><span class="keyword">int</span> &amp;b = a;  <span class="comment">// b是a的引用</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; &amp;a &lt;&lt; <span class="built_in">endl</span>;  <span class="comment">//对对象取地址</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; *p &lt;&lt; <span class="built_in">endl</span>;  <span class="comment">//5 *是解引用</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; p &lt;&lt; <span class="built_in">endl</span>;  <span class="comment">//0x7ffeefbff604</span></span><br></pre></td></tr></table></figure></section>
+    <section class="markdown-content"><h4 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h4><p><strong>数组名代表第一个元素的位置</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a[<span class="number">10</span>] = &#123;<span class="number">1</span>&#125;;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; &amp;a[<span class="number">0</span>] &lt;&lt; <span class="built_in">endl</span>;   <span class="comment">// 第一个元素位置</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; a &lt;&lt; <span class="built_in">endl</span>;       <span class="comment">// 数组名等价于第一个元素位置 类型是int*</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; &amp;a &lt;&lt; <span class="built_in">endl</span>;      <span class="comment">// 类型是整个数组类型 类型是int(*)[10] （指向具有10个int元素的数组的数组指针）</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> b[<span class="number">10</span>];</span><br><span class="line"><span class="keyword">char</span>* p = b;             <span class="comment">// 指向第一个元素</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; b &lt;&lt; <span class="built_in">endl</span>;       <span class="comment">// 会一直往后面输出，直到遇到终止符号</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; p &lt;&lt; <span class="built_in">endl</span>;       <span class="comment">// 同理</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; &amp;b &lt;&lt; <span class="built_in">endl</span>;      <span class="comment">// 数组的类型是 char(*) [10]</span></span><br><span class="line"><span class="keyword">char</span> (*p)[<span class="number">10</span>] = &amp;b;      <span class="comment">//也可以这样赋值</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>往char类型存入字符串的话，需要在末尾加上<code>\0</code>  作为终止符</p>
+</blockquote>
+<h5 id="区分"><a href="#区分" class="headerlink" title="区分"></a>区分</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> a[<span class="number">10</span>];</span><br><span class="line"><span class="comment">// a + 1       首地址 + sizeof(char)</span></span><br><span class="line"><span class="comment">// &amp;a + 1      首地址 + sizeof(a)</span></span><br><span class="line"><span class="comment">// sizeof(a)   数组的长度</span></span><br><span class="line"><span class="comment">// sizeof(&amp;a)  第一个指针变量的长度</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//举例</span></span><br><span class="line"><span class="keyword">int</span> a[<span class="number">10</span>] = &#123;<span class="number">1</span>&#125;;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; a &lt;&lt; <span class="built_in">endl</span>;      <span class="comment">//0x7ffeefbff400</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; &amp;a + <span class="number">1</span> &lt;&lt; <span class="built_in">endl</span>; <span class="comment">//0x7ffeefbff428 相差40个bytes 正好是一个数组长度</span></span><br></pre></td></tr></table></figure>
+
+<p>C++中传递数组永远是传递数组首元素的指针以及长度，后面用<code>memset</code></p>
+<h5 id="二维数组-可以看作多个一维数组"><a href="#二维数组-可以看作多个一维数组" class="headerlink" title="二维数组 - 可以看作多个一维数组"></a>二维数组 - 可以看作多个一维数组</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a[<span class="number">3</span>][<span class="number">2</span>];</span><br><span class="line"><span class="keyword">char</span> （*p) [<span class="number">2</span>] =  a;  <span class="comment">// a是第一维数组的数组名</span></span><br><span class="line"><span class="keyword">char</span> *p = a[<span class="number">0</span>];       <span class="comment">// a[0]是第二维的数组名</span></span><br><span class="line"><span class="keyword">char</span> (*p)[<span class="number">3</span>][<span class="number">2</span>] = &amp;a</span><br></pre></td></tr></table></figure>
+
+<h5 id="三维数组"><a href="#三维数组" class="headerlink" title="三维数组"></a>三维数组</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a[<span class="number">3</span>][<span class="number">2</span>][<span class="number">2</span>];</span><br><span class="line"><span class="keyword">char</span> *p = a[<span class="number">0</span>][<span class="number">0</span>];</span><br><span class="line"><span class="keyword">char</span> (*p)[<span class="number">2</span>] = a[<span class="number">0</span>];</span><br><span class="line"><span class="keyword">char</span> (*p)[<span class="number">2</span>][<span class="number">2</span>] = a;</span><br><span class="line"><span class="keyword">char</span> (*p)[<span class="number">3</span>][<span class="number">2</span>][<span class="number">2</span>] = &amp;a;</span><br></pre></td></tr></table></figure>
+
+</section>
     <!-- Tags START -->
     
     <!-- Tags END -->
@@ -165,20 +177,13 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2019/09/20/hello-world/">
+      <a class="nav-left" href="/2019/10/10/Mysql的两种引擎/">
         <span class="nav-arrow">← </span>
-        
-          Hello World
-        
-      </a>
-    
-    
-      <a class="nav-right" href="/2019/10/10/Mysql的两种引擎/">
         
           Mysql的两种引擎
         
-        <span class="nav-arrow"> →</span>
       </a>
+    
     
   </div>
 
@@ -224,7 +229,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#引用-vs-指针"><span class="toc-nav-text">引用 vs 指针</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#数组"><span class="toc-nav-text">数组</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#区分"><span class="toc-nav-text">区分</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#二维数组-可以看作多个一维数组"><span class="toc-nav-text">二维数组 - 可以看作多个一维数组</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#三维数组"><span class="toc-nav-text">三维数组</span></a></li></ol></li></ol>
     
   </div>
 </aside>
@@ -234,7 +239,7 @@
 
 <script>
   (function () {
-    var url = 'http://yoursite.com/2019/09/20/test/';
+    var url = 'http://yoursite.com/2019/10/23/C-数组总结/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
@@ -296,7 +301,7 @@
     var gitmentConfig = "mars-tian";
     if (gitmentConfig !== 'undefined') {
       var gitment = new Gitment({
-        id: "test",
+        id: "C++数组总结",
         owner: "mars-tian",
         repo: "mars-tian.github.io",
         oauth: {

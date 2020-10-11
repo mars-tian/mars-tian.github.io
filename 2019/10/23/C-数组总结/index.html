@@ -183,6 +183,7 @@
 
 <h4 id="sizeof与算数运算"><a href="#sizeof与算数运算" class="headerlink" title="sizeof与算数运算"></a><code>sizeof</code>与算数运算</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> a[<span class="number">10</span>];</span><br><span class="line"><span class="comment">// a + 1       首地址 + sizeof(char)</span></span><br><span class="line"><span class="comment">// &amp;a + 1      首地址 + sizeof(a)</span></span><br><span class="line"><span class="comment">// 不允许 a++   a是常量，不允许自增运算</span></span><br><span class="line"><span class="comment">// sizeof(a)   数组的长度</span></span><br><span class="line"><span class="comment">// sizeof(&amp;a)  第一个指针变量的长度</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//举例</span></span><br><span class="line"><span class="keyword">int</span> a[<span class="number">10</span>] = &#123;<span class="number">1</span>&#125;;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; a &lt;&lt; <span class="built_in">endl</span>;      <span class="comment">// 0x7ffeefbff400</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; &amp;a + <span class="number">1</span> &lt;&lt; <span class="built_in">endl</span>; <span class="comment">// 0x7ffeefbff428 相差40个bytes 正好是a的数组长度</span></span><br></pre></td></tr></table></figure>
 
+<h5 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h5><p><a href="https://www.cnblogs.com/chenyangyao/p/5222696.html" target="_blank" rel="noopener"></a></p>
 </section>
     <!-- Tags START -->
     
@@ -244,7 +245,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#C-数组-amp-指针"><span class="toc-nav-text">C++ 数组 &amp; 指针</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#二维数组-可以看作多个一维数组"><span class="toc-nav-text">二维数组 - 可以看作多个一维数组</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#三维数组"><span class="toc-nav-text">三维数组</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#sizeof与算数运算"><span class="toc-nav-text">sizeof与算数运算</span></a></li></ol></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#C-数组-amp-指针"><span class="toc-nav-text">C++ 数组 &amp; 指针</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#二维数组-可以看作多个一维数组"><span class="toc-nav-text">二维数组 - 可以看作多个一维数组</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#三维数组"><span class="toc-nav-text">三维数组</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#sizeof与算数运算"><span class="toc-nav-text">sizeof与算数运算</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#参考："><span class="toc-nav-text">参考：</span></a></li></ol></li></ol></li></ol>
     
   </div>
 </aside>
@@ -348,7 +349,7 @@
 </div>
     <footer class="app-footer">
   <p class="copyright">
-    &copy; 2019 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
     <br>
     Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
   </p>

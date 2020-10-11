@@ -153,17 +153,18 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h6 id="衡量程序的好坏不是用特定的数据量来衡量，而是数据的规模变大到几百倍后，程序运行的时间是否相同。"><a href="#衡量程序的好坏不是用特定的数据量来衡量，而是数据的规模变大到几百倍后，程序运行的时间是否相同。" class="headerlink" title="衡量程序的好坏不是用特定的数据量来衡量，而是数据的规模变大到几百倍后，程序运行的时间是否相同。"></a>衡量程序的好坏不是用特定的数据量来衡量，而是数据的规模变大到几百倍后，程序运行的时间是否相同。</h6><p><strong>举例</strong>：数据增大两倍，时间增大4倍，那么属于O(n^2)的复杂度。</p>
+    <section class="markdown-content"><p>衡量程序的好坏不是用特定的数据量来衡量，而是数据的规模变大到几百倍后，程序运行的时间是否相同。</p>
+<p><strong>举例</strong>：数据增大两倍，时间增大4倍，那么属于O(n^2)的复杂度。</p>
 <p><strong>分类</strong>：    </p>
 <ul>
 <li>多项式级 O(1),O(log(n)),O(n^a)</li>
 <li>非多项式级别 O(a^n)和O(n!)</li>
 </ul>
-<h3 id="P类问题"><a href="#P类问题" class="headerlink" title="P类问题"></a>P类问题</h3><p>一个问题可以找到一个在多项式时间内解决的算法</p>
-<h3 id="NP类问题"><a href="#NP类问题" class="headerlink" title="NP类问题"></a>NP类问题</h3><p>指在多项式时间内验证一个解的问题/猜出一个解。</p>
+<h4 id="P类问题"><a href="#P类问题" class="headerlink" title="P类问题"></a>P类问题</h4><p>一个问题可以找到一个在多项式时间内解决的算法</p>
+<h4 id="NP类问题"><a href="#NP类问题" class="headerlink" title="NP类问题"></a>NP类问题</h4><p>指在多项式时间内验证一个解的问题/猜出一个解。</p>
 <p>（类似于存在性问题，比如问A到B是否有一条长度为100的路）</p>
-<h3 id="关系"><a href="#关系" class="headerlink" title="关系"></a>关系</h3><p>显然，所有的P问题都是NP问题，但P=NP是关注的焦点。</p>
-<h3 id="NPC问题"><a href="#NPC问题" class="headerlink" title="NPC问题"></a>NPC问题</h3><p>规约：问题A可规约为问题B，即指可以用B的解法来解A，或者说问题A可以变为问题B。</p>
+<h4 id="关系"><a href="#关系" class="headerlink" title="关系"></a>关系</h4><p>显然，所有的P问题都是NP问题，但P=NP是关注的焦点。</p>
+<h4 id="NPC问题"><a href="#NPC问题" class="headerlink" title="NPC问题"></a>NPC问题</h4><p>规约：问题A可规约为问题B，即指可以用B的解法来解A，或者说问题A可以变为问题B。</p>
 <p>举例：一元一次方程可以规约为一元二次方程。原因在于只要加上系数为0的二次项即可。</p>
 <p>意义：B的时间复杂度 &gt; A的时间复杂度；具有传递性</p>
 <h6 id="不断提升时间复杂度，存在一类（许多个）NP问题，能够让所有的NP问题转化为它。即NP-C问题。"><a href="#不断提升时间复杂度，存在一类（许多个）NP问题，能够让所有的NP问题转化为它。即NP-C问题。" class="headerlink" title="不断提升时间复杂度，存在一类（许多个）NP问题，能够让所有的NP问题转化为它。即NP-C问题。"></a>不断提升时间复杂度，存在一类（许多个）NP问题，能够让所有的NP问题转化为它。即NP-C问题。</h6><p>当想要表达一个问题不存在多项式的高效算法时，就说这个问题属于NPC问题。</p>
@@ -173,10 +174,10 @@
 </ol>
 <p>那么如果一个NPC问题找到多项式解法，所有的NP问题就能用这个算法解决了。因此正是由于NPC的存在，所以P≠NP。</p>
 <p>（如果证明了P=NP，那么证明一个解和验证一个解一样容易）</p>
-<h3 id="NP-Hard问题"><a href="#NP-Hard问题" class="headerlink" title="NP-Hard问题"></a>NP-Hard问题</h3><p>只满足NPC问题的第二条</p>
+<h4 id="NP-Hard问题"><a href="#NP-Hard问题" class="headerlink" title="NP-Hard问题"></a>NP-Hard问题</h4><p>只满足NPC问题的第二条</p>
 <p>放宽了条件，比NPC问题更难解决。</p>
 <h3 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h3><blockquote>
-<p>[参考](</p>
+<p><a href="http://www.matrix67.com/blog/archives/105" target="_blank" rel="noopener">http://www.matrix67.com/blog/archives/105</a></p>
 </blockquote>
 </section>
     <!-- Tags START -->
@@ -248,7 +249,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#衡量程序的好坏不是用特定的数据量来衡量，而是数据的规模变大到几百倍后，程序运行的时间是否相同。"><span class="toc-nav-text">衡量程序的好坏不是用特定的数据量来衡量，而是数据的规模变大到几百倍后，程序运行的时间是否相同。</span></a></li></ol></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#P类问题"><span class="toc-nav-text">P类问题</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#NP类问题"><span class="toc-nav-text">NP类问题</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#关系"><span class="toc-nav-text">关系</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#NPC问题"><span class="toc-nav-text">NPC问题</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#不断提升时间复杂度，存在一类（许多个）NP问题，能够让所有的NP问题转化为它。即NP-C问题。"><span class="toc-nav-text">不断提升时间复杂度，存在一类（许多个）NP问题，能够让所有的NP问题转化为它。即NP-C问题。</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#NPC问题两个要求"><span class="toc-nav-text">NPC问题两个要求</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#NP-Hard问题"><span class="toc-nav-text">NP-Hard问题</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#参考："><span class="toc-nav-text">参考：</span></a>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#P类问题"><span class="toc-nav-text">P类问题</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#NP类问题"><span class="toc-nav-text">NP类问题</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#关系"><span class="toc-nav-text">关系</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#NPC问题"><span class="toc-nav-text">NPC问题</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#不断提升时间复杂度，存在一类（许多个）NP问题，能够让所有的NP问题转化为它。即NP-C问题。"><span class="toc-nav-text">不断提升时间复杂度，存在一类（许多个）NP问题，能够让所有的NP问题转化为它。即NP-C问题。</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#NPC问题两个要求"><span class="toc-nav-text">NPC问题两个要求</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#NP-Hard问题"><span class="toc-nav-text">NP-Hard问题</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#参考："><span class="toc-nav-text">参考：</span></a>
     
   </div>
 </aside>

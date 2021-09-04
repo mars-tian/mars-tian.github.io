@@ -186,12 +186,12 @@
 <p>service的入口，定义了规则，通过它定义好的域名的请求转发到集群中的service</p>
 <p>每添加一个新服务，只要写一个新的ingress的yaml即可</p>
 <p>相当于将nginx的配置抽象为ingress对象</p>
-<img src="K8s-学习/image-20210814134622690.png" alt="image-20210814134622690" style="zoom:33%;">
+<img src="image-20210814134622690.png" alt="image-20210814134622690" style="zoom:33%;">
 
 
 
 <h5 id="ingress-controller"><a href="#ingress-controller" class="headerlink" title="ingress controller"></a>ingress controller</h5><p>把新加入的ingress转化为nginx的配置并生效</p>
-<p><img src="K8s-%E5%AD%A6%E4%B9%A0/image-20210814140841896-8921323.png" alt="image-20210814140841896"></p>
+<p><img src="image-20210814140841896-8921323.png" alt="image-20210814140841896"></p>
 <h4 id="相关命令"><a href="#相关命令" class="headerlink" title="相关命令"></a>相关命令</h4><h5 id="运行参数"><a href="#运行参数" class="headerlink" title="运行参数"></a>运行参数</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-server -jar /app/eval-0.0.1-SNAPSHOT.jar --spring.config.additional-location=config.yml -Duser.timezone=GMT+8 &amp;&gt;/app/log/$(date +%Y-%m-%d_%H-%M-%S.log) &amp;</span><br><span class="line"></span><br><span class="line">-server -jar /app/seecoder-paas.jar --spring.config.additional-location=config.yml -Duser.timezone=GMT+8 &amp;&gt;/app/log/$(date +%Y-%m-%d_%H-%M-%S.log) &amp;</span><br></pre></td></tr></table></figure>
 
 <h5 id="获得所有namespace下的pod"><a href="#获得所有namespace下的pod" class="headerlink" title="获得所有namespace下的pod"></a>获得所有namespace下的pod</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pods --all-namespaces</span><br></pre></td></tr></table></figure>

@@ -18,16 +18,10 @@
   <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
   
-    <link rel="stylesheet" href="/css/plugins/gitment.css">
-  
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
   
-    <script src="/js/qrious.js"></script>
-  
-  
-    <script src="/js/gitment.js"></script>
   
   
   
@@ -219,6 +213,7 @@
 <p>tls配置</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">tls:</span></span><br><span class="line"><span class="attr">  - hosts:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">seec.seecoder.cn</span></span><br><span class="line"><span class="attr">    secretName:</span> <span class="string">seecoder-paas</span></span><br></pre></td></tr></table></figure>
 
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gu4wgz7koyj61400p0mzs02.jpg" alt="v2-e6306eec0a4f4f20585f81c4aae003fd_1440w"></p>
 </section>
     <!-- Tags START -->
     
@@ -241,36 +236,12 @@
     <!-- NAV END -->
     <!-- 打赏 START -->
     <!---->
-      <!--<div class="money-like">-->
-        <!--<div class="reward-btn">-->
-          <!--赏-->
-          <!--<span class="money-code">-->
-            <!--<span class="alipay-code">-->
-              <!--<div class="code-image"></div>-->
-              <!--<b>使用支付宝打赏</b>-->
-            <!--</span>-->
-            <!--<span class="wechat-code">-->
-              <!--<div class="code-image"></div>-->
-              <!--<b>使用微信打赏</b>-->
-            <!--</span>-->
-          <!--</span>-->
-        <!--</div>-->
-        <!--<p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>-->
-      <!--</div>-->
-    <!---->
     <!-- 打赏 END -->
     <!-- 二维码 START -->
     
-      <div class="qrcode">
-        <canvas id="share-qrcode"></canvas>
-        <p class="notice">扫描二维码，分享此文章</p>
-      </div>
-    
     <!-- 二维码 END -->
     
-      <!-- Gitment START -->
-      <div id="comments"></div>
-      <!-- Gitment END -->
+      <!-- No Comment -->
     
   </article>
   <!-- Article END -->
@@ -339,42 +310,7 @@
 </script>
 
 
-  <script>
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-  </script>
 
-
-
-  <script>
-    var gitmentConfig = "mars-tian";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "K8s 学习",
-        owner: "mars-tian",
-        repo: "mars-tian.github.io",
-        oauth: {
-          client_id: "a058fa39d256778f06bd",
-          client_secret: "9040a53924a9e3d4ac1a5bc558b86350550355ac"
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
-        }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  </script>
 
 
 

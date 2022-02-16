@@ -152,13 +152,13 @@
     <section class="markdown-content"><h3 id="采用Distinct字段"><a href="#采用Distinct字段" class="headerlink" title="采用Distinct字段"></a>采用Distinct字段</h3><p>执行以下语句</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">explain SELECT DISTINCT film.film_id</span><br><span class="line">FROM sakila.film</span><br><span class="line">INNER JOIN sakila.film_actor USING(film_id);</span><br><span class="line"></span><br><span class="line">show profiles;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/../../../Documents/%E5%AD%A6%E4%B9%A0/%E7%AC%94%E8%AE%B0%E5%90%88%E9%9B%86/img/1.png" alt="1"></p>
-<p><img src="/MySQL%E4%B8%ADExist%E4%B8%8EDistinct%E5%8C%BA%E5%88%AB/2.png"></p>
+<p><img src="/2022/02/16/MySQL%E4%B8%ADExist%E4%B8%8EDistinct%E5%8C%BA%E5%88%AB/1.png" alt="1"></p>
+<p><img src="/2022/02/16/MySQL%E4%B8%ADExist%E4%B8%8EDistinct%E5%8C%BA%E5%88%AB/2.png" alt="1"></p>
 <h3 id="采用Exist"><a href="#采用Exist" class="headerlink" title="采用Exist"></a>采用Exist</h3><p>执行以下语句</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">explain SELECT film_id</span><br><span class="line">FROM sakila.film</span><br><span class="line">WHERE EXISTS(</span><br><span class="line">SELECT * FROM sakila.film_actor</span><br><span class="line">WHERE film.film_id = film_actor.film_id);</span><br><span class="line"></span><br><span class="line">show profiles;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/MySQL%E4%B8%ADExist%E4%B8%8EDistinct%E5%8C%BA%E5%88%AB/3.png" alt="image-20200306103426668"></p>
-<p><img src="/MySQL%E4%B8%ADExist%E4%B8%8EDistinct%E5%8C%BA%E5%88%AB/4.png" alt="image-20200306225628639"></p>
+<p><img src="/2022/02/16/MySQL%E4%B8%ADExist%E4%B8%8EDistinct%E5%8C%BA%E5%88%AB/3.png" alt="1"></p>
+<p><img src="/2022/02/16/MySQL%E4%B8%ADExist%E4%B8%8EDistinct%E5%8C%BA%E5%88%AB/4.png" alt="4"></p>
 <h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><ul>
 <li>Select type : distinct字段是两个普通子查询，exist是一个主查询以及子查询中的第一个select查询。</li>
 <li>type：均是一个index和ref</li>
@@ -173,11 +173,9 @@
 <p>对于distinct，用到了临时表，先把<code>select film.film_id</code>的结果存入临时表，然后再扫描<code>film_actor</code>，用索引查找并和join_buffer中的内容做对比，符合join条件的，作为结果集返回。最后再做Distinct操作。这里的distinct没有用到<code>Using filesort</code>操作。</p>
 <p>对于exist只负责查询select是否在子查询。核心表是film表，子查询和外层表关系紧密，外层查询对film表进行遍历，然后做exist存在性测试，如果非空，那么film_id就是需要的结果，否则剔除。只要满足符合条件的一条即可满足。</p>
 <p>对执行时间做进一步探索。</p>
-<img src="MySQL中Exist与Distinct区别/5.png" alt="image-20200306230220400" style="zoom: 33%;" />
-
+<p><img src="/2022/02/16/MySQL%E4%B8%ADExist%E4%B8%8EDistinct%E5%8C%BA%E5%88%AB/5.png" alt="1"></p>
 <p>上图是第一个查询的详细用时，可以看到主要时间用在<code>Opening tables</code>和<code>Sending data</code>上，其次还有一些创建tmp table的时间。</p>
-<img src="MySQL中Exist与Distinct区别/6.png" alt="image-20200306230434302" style="zoom:50%;" />
-
+<p><img src="/2022/02/16/MySQL%E4%B8%ADExist%E4%B8%8EDistinct%E5%8C%BA%E5%88%AB/6.png" alt="1"></p>
 <p>上图是查询2的详细用时，不过只截取了一部分，其余的行都是executing - sending data - end此类。清理也用了比查询1更多的时间。</p>
 <p>综上所述，查询一尽管创建临时表花费一些时间，但通过优化器，利用内存中的临时表等操作做了较少的查询工作，而查询二由于大量的传输数据时间以及查询时间，导致最后花费时间比较长。</p>
 </section>

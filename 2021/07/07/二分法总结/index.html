@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="My personal blog">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      二分法总结 | Mars&#39;s Blog
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Mars's Blog</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>二分法总结</h2>
+  <p class="post-date">2021-07-07</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="基础分析"><a href="#基础分析" class="headerlink" title="基础分析"></a>基础分析</h3><p>减治：每次排除不符合要求的元素，搜索空间持续减少</p>
+<p>标准模版：(<strong>当目标元素有多个的时候</strong>)</p>
+<br>
+
+<p>在[l, r)上找目标元素</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> l = <span class="number">0</span>, r = nums.<span class="built_in">size</span>();</span><br><span class="line"><span class="keyword">while</span> (l &lt; r) &#123; <span class="comment">//相等就退出</span></span><br><span class="line">  <span class="keyword">int</span> mid = l + (r - l) / <span class="number">2</span>; <span class="comment">//也可以 long mid = (long)l + r &gt;&gt; 1</span></span><br><span class="line">  <span class="keyword">if</span> (target &lt; nums[mid]) &#123;</span><br><span class="line">    r = mid; <span class="comment">//说明答案在[l, mid)区间 注意r也是取不到的</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    l = mid + <span class="number">1</span>; <span class="comment">//说明答案在(mid, r)，也就是[mid + 1, r)区间，根据数学归纳法可以排除掉A[mid]</span></span><br><span class="line">  &#125;<span class="comment">// while的出口是大于target最小元素 查找成功不能提前终止。最后返回的l相当于upper_bound</span></span><br><span class="line">  <span class="keyword">return</span> --l; <span class="comment">//此时 l == r，区间缩为一个点，l-1是不大于target的最大元素</span></span><br><span class="line">  <span class="comment">// 有多个命中元素，能返回秩最大值，查找失败，能返回失败的位置</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后将数组分为两个部分，左边满足&lt;= target  target &gt; 右边</p>
+<p>最后循环结束后，l是右半部分的第一个元素，l-1是左半部分最后一个元素</p>
+<p>另一种写法：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> l = <span class="number">0</span>, r = nums.<span class="built_in">size</span>() - <span class="number">1</span>;</span><br><span class="line"><span class="keyword">while</span> (l &lt;= r) &#123;</span><br><span class="line">  <span class="keyword">int</span> mid = l + (r - l) / <span class="number">2</span>;</span><br><span class="line">  <span class="keyword">if</span> (nums[mid] == target) <span class="keyword">return</span> mid;</span><br><span class="line">  <span class="keyword">if</span> (nums[mid] &gt; target) r = mid - <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &lt; target) l = mid + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> <span class="number">-1</span>;</span><br></pre></td></tr></table></figure>
+
+<p>两种写法的三点不同：r的初始值，while循环条件，r的移动规则（l都是mid+1）<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/binary-search/solution/er-fen-cha-zhao-de-xun-huan-bu-bian-liang-zhi-yao-/">参考</a></p>
+<p>核心是让本次循环和上一次循环的查找范围既不重复，也不遗漏</p>
+<img src="image-20210716100510835.png" alt="image-20210716100510835" style="zoom:33%;" />
+
+<br>
+
+<p>网上总结关于二分的几种类型 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/grandyang/p/6854825.html">https://www.cnblogs.com/grandyang/p/6854825.html</a></p>
+<p>总结的很好：<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000016825704">https://segmentfault.com/a/1190000016825704</a></p>
+<h3 id="基础题目"><a href="#基础题目" class="headerlink" title="基础题目"></a>基础题目</h3><p>【LeetCode34】</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">searchRange</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">notFound</span><span class="params">(&#123;<span class="number">-1</span>,<span class="number">-1</span>&#125;)</span></span>;</span><br><span class="line">        <span class="keyword">if</span> (nums.<span class="built_in">size</span>() == <span class="number">0</span>) <span class="keyword">return</span> notFound;</span><br><span class="line">        <span class="keyword">int</span> start = <span class="built_in">binarySearch</span>(nums, target - <span class="number">1</span>) + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> end = <span class="built_in">binarySearch</span>(nums, target);</span><br><span class="line">        cout &lt;&lt; start &lt;&lt; end;</span><br><span class="line">        <span class="keyword">if</span> (start &lt;= end &amp;&amp; nums[start] == target) <span class="keyword">return</span> vector&lt;<span class="keyword">int</span>&gt;(&#123;start, end&#125;); <span class="comment">//注意这里的start&lt;=end,目的是排除当出现[2,2] 3 这样的用例时候的情况，这时候start = 2, end = 1</span></span><br><span class="line">        <span class="keyword">return</span> notFound;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">binarySearch</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> l = <span class="number">0</span>, r = nums.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">while</span> (l &lt; r) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = l + (r - l) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span> (target &lt; nums[mid]) r = mid;</span><br><span class="line">            <span class="keyword">else</span> l = mid + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> --l;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;	</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="二段性"><a href="#二段性" class="headerlink" title="二段性"></a>二段性</h3><p>二分的本质不是单调性，而是<strong>二段性</strong></p>
+<p>满足二段性的特征就可以使用二分法，不一定需要严格符合二分的要求</p>
+<p>二段性也不仅仅是<strong>满足/不满足</strong>进行二分，<strong>一定满足/不一定满足</strong>也可以二分</p>
+<br>
+
+<p>【LeetCode 152】</p>
+<p>这道题的二段性的含义：在以mid为分割点的数组中，根据nums[mid+1]和nums[mid]的大小关系，可以确定一段必然有解，另一段可能有解，可能无解</p>
+<p>因此选择一段进行二分，能保证区间内一定有峰值</p>
+<p>简单的理解：如果nums[mid - 1] &lt; nums[mid]，那么说明mid处可能为峰值，而mid-1处肯定不是峰值，因此在右半边继续找（需要注意因为要取到mid-1，所以l的初始值设为1）</p>
+<p>严格证明：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-peak-element/solution/gong-shui-san-xie-noxiang-xin-ke-xue-xi-qva7v/">https://leetcode-cn.com/problems/find-peak-element/solution/gong-shui-san-xie-noxiang-xin-ke-xue-xi-qva7v/</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">findPeakElement</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = nums.<span class="built_in">size</span>(), l = <span class="number">1</span>, r = n;</span><br><span class="line">        <span class="keyword">if</span> (n == <span class="number">1</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (l &lt; r) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = l + (r - l) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span> (nums[mid - <span class="number">1</span>] &lt; nums[mid]) l = mid + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">else</span> r = mid;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> --l;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<p>由于下面要取mid+1，这种解法r最大能取到n-2</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">findPeakElement</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = nums.<span class="built_in">size</span>(), l = <span class="number">0</span>, r = n - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (n == <span class="number">1</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (l &lt; r) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = l + (r - l) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span> (nums[mid] &gt; nums[mid + <span class="number">1</span>]) r = mid;</span><br><span class="line">            <span class="keyword">else</span> l = mid + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> l;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<br>
+
+<p>【LeetCode33】搜索旋转数组</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">search</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> l = <span class="number">0</span>, r = nums.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">while</span> (l &lt; r) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = l + (r - l) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span> (target == nums[mid]) <span class="keyword">return</span> mid;</span><br><span class="line">            <span class="comment">//看mid分成的两部分那哪个是有序的</span></span><br><span class="line">            <span class="keyword">if</span> (nums[l] &lt;= nums[mid]) &#123;</span><br><span class="line">                <span class="keyword">if</span> (nums[l] &lt;= target &amp;&amp; target &lt; nums[mid]) &#123; <span class="comment">//注意这里的等号</span></span><br><span class="line">                    r = mid;</span><br><span class="line">                &#125; <span class="keyword">else</span> l = mid + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (nums[mid] &lt; target &amp;&amp; target &lt;= nums[r - <span class="number">1</span>]) &#123; <span class="comment">//注意这里的等号，还有r取不到</span></span><br><span class="line">                    l = mid + <span class="number">1</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> r = mid;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>需要明确一个规律，对于旋转数组，从任意一个地方切分，有一边的数组一定有序，另一边可能有序，可能无序</p>
+<p>在每次二分中，先判断该区间是否有序，以及target是否在这段区间。然后可以在有序区间内二分查找，无序部分再进行切分，以此不断缩小搜索范围</p>
+<p>其他思路：先判断target在左边还是右边，把另外一侧改为+Inf和-Inf。（主要是这个赋值的过程可以在二分的时候顺便完成的写法比较有趣）</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/lfri/p/12553209.html">四道旋转数组</a></p>
+<br>
+
+<p>【LeetCode 852】找出极值点 满足/不满足的二分</p>
+<p>二段性：峰值左侧满足递增，右侧不满足，右侧满足递减，左侧不满足</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">peakIndexInMountainArray</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; arr)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> l = <span class="number">0</span>, r = arr.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">while</span> (l &lt; r) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = l + (r - l) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span> (arr[mid - <span class="number">1</span>] &lt; arr[mid]) &#123;</span><br><span class="line">                l = mid + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> r = mid;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> --l;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>如果是arr[mid]和arr[mid + 1]比较，最后返回l</p>
+<br>
+
+<p>【LeetCode4】</p>
+<p>这道题和找出第k小的数字思路是一样的</p>
+<p>递归方法：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">findMedianSortedArrays</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; nums1, vector&lt;<span class="keyword">int</span>&gt;&amp; nums2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> l = nums1.<span class="built_in">size</span>() + nums2.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">if</span> (l % <span class="number">2</span> == <span class="number">0</span>) <span class="keyword">return</span> ( <span class="built_in">getKthElement</span>(nums1, <span class="number">0</span>, nums1.<span class="built_in">size</span>() - <span class="number">1</span>, nums2, <span class="number">0</span>, nums2.<span class="built_in">size</span>() - <span class="number">1</span>, l / <span class="number">2</span> ) + <span class="built_in">getKthElement</span>(nums1, <span class="number">0</span>, nums1.<span class="built_in">size</span>() - <span class="number">1</span>, nums2, <span class="number">0</span>, nums2.<span class="built_in">size</span>() - <span class="number">1</span>, l / <span class="number">2</span> - <span class="number">1</span>) ) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> <span class="built_in">getKthElement</span>(nums1, <span class="number">0</span>, nums1.<span class="built_in">size</span>() - <span class="number">1</span>, nums2, <span class="number">0</span>, nums2.<span class="built_in">size</span>() - <span class="number">1</span>, l / <span class="number">2</span> );</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">getKthElement</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; nums1, <span class="keyword">int</span> a, <span class="keyword">int</span> b, vector&lt;<span class="keyword">int</span>&gt;&amp; nums2, <span class="keyword">int</span> c, <span class="keyword">int</span> d, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (b - a &lt; <span class="number">0</span>) <span class="keyword">return</span> nums2[k + c]; </span><br><span class="line">        <span class="keyword">if</span> (d - c &lt; <span class="number">0</span>) <span class="keyword">return</span> nums1[k + a];</span><br><span class="line">        <span class="keyword">if</span> (k &lt; <span class="number">1</span>) <span class="keyword">return</span> <span class="built_in">min</span>(nums1[a], nums2[c]);</span><br><span class="line">        <span class="keyword">int</span> i1 = (b + a) / <span class="number">2</span>, i2 = (d + c) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">int</span> v1 = nums1[i1], v2 = nums2[i2];</span><br><span class="line">        <span class="keyword">if</span> ((i1 - a + i2 - c) &lt; k) &#123; <span class="comment">//注意这里需要计算两个数组的前一半和为多少，这个需要与k比较</span></span><br><span class="line">            <span class="keyword">if</span> (v1 &lt; v2) &#123; <span class="comment">//小的数字对应数组的前半部分不可能出现第k个数字，因此把1的前半段排除，搜索范围变小</span></span><br><span class="line">                <span class="keyword">return</span> <span class="built_in">getKthElement</span>(nums1, i1 + <span class="number">1</span>, b, nums2, c, d, k - (i1 - a + <span class="number">1</span>));</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">return</span> <span class="built_in">getKthElement</span>(nums1, a, b, nums2, i2 + <span class="number">1</span>, d, k - (i2 - c + <span class="number">1</span>));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (v1 &lt; v2) &#123; <span class="comment">//大数字对应数组的后半段不可能出现第k个数字</span></span><br><span class="line">                <span class="keyword">return</span> <span class="built_in">getKthElement</span>(nums1, a, b, nums2, c, i2 - <span class="number">1</span>, k);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">return</span> <span class="built_in">getKthElement</span>(nums1, a , i1 - <span class="number">1</span>, nums2, c, d, k);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>时间复杂度分析：每进行一次循环，就减少k/2个元素，所以时间复杂度为O(logK)，k = (m+n)/2，所以复杂度也就是O(log(m+n))</p>
+<p>参考：</p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/median-of-two-sorted-arrays/discuss/2511/Intuitive-Python-O(log-(m%2Bn))-solution-by-kth-smallest-in-the-two-sorted-arrays-252ms">https://leetcode.com/problems/median-of-two-sorted-arrays/discuss/2511/Intuitive-Python-O(log-(m%2Bn))-solution-by-kth-smallest-in-the-two-sorted-arrays-252ms</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/median-of-two-sorted-arrays/solution/xiang-xi-tong-su-de-si-lu-fen-xi-duo-jie-fa-by-w-2/">https://leetcode-cn.com/problems/median-of-two-sorted-arrays/solution/xiang-xi-tong-su-de-si-lu-fen-xi-duo-jie-fa-by-w-2/</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/median-of-two-sorted-arrays/solution/xun-zhao-liang-ge-you-xu-shu-zu-de-zhong-wei-s-114/">方法三-非递归方法</a></p>
+<br>
+
+<p>【LeetCode 352】</p>
+<img src="image-20211010193013470.png" alt="image-20211010193013470" style="zoom:25%;" />
+
+<p>相当于对于每个val，要找到离val最近的两个区间。(图片和下面代码的情况不对应)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SummaryRanges</span> </span>&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    map&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; intervals;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    SummaryRanges() &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">addNum</span><span class="params">(<span class="keyword">int</span> val)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 找到 l1 最小的且满足 l1 &gt; val 的区间 interval1 = [l1, r1]</span></span><br><span class="line">        <span class="comment">// 如果不存在这样的区间，interval1 为尾迭代器</span></span><br><span class="line">        auto interval1 = intervals.upper_bound(val);</span><br><span class="line">        <span class="comment">// 找到 l0 最大的且满足 l0 &lt;= val 的区间 interval0 = [l0, r0]</span></span><br><span class="line">        <span class="comment">// 在有序集合中，interval0 就是 interval1 的前一个区间</span></span><br><span class="line">        <span class="comment">// 如果不存在这样的区间，interval0 为尾迭代器</span></span><br><span class="line">        auto interval0 = (interval1 == intervals.begin() ? intervals.end() : prev(interval1));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (interval0 != intervals.end() &amp;&amp; interval0-&gt;first &lt;= val &amp;&amp; val &lt;= interval0-&gt;second) &#123;</span><br><span class="line">            <span class="comment">// 情况一</span></span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            bool left_aside = (interval0 != intervals.end() &amp;&amp; interval0-&gt;second + <span class="number">1</span> == val);</span><br><span class="line">            bool right_aside = (interval1 != intervals.end() &amp;&amp; interval1-&gt;first - <span class="number">1</span> == val);</span><br><span class="line">            <span class="keyword">if</span> (left_aside &amp;&amp; right_aside) &#123;</span><br><span class="line">                <span class="comment">// 情况四</span></span><br><span class="line">                <span class="keyword">int</span> left = interval0-&gt;first, right = interval1-&gt;second;</span><br><span class="line">                intervals.erase(interval0);</span><br><span class="line">                intervals.erase(interval1);</span><br><span class="line">                intervals.emplace(left, right);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (left_aside) &#123;</span><br><span class="line">                <span class="comment">// 情况二</span></span><br><span class="line">                ++interval0-&gt;second;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (right_aside) &#123;</span><br><span class="line">                <span class="comment">// 情况三</span></span><br><span class="line">                <span class="keyword">int</span> right = interval1-&gt;second;</span><br><span class="line">                intervals.erase(interval1);</span><br><span class="line">                intervals.emplace(val, right);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// 情况五</span></span><br><span class="line">                intervals.emplace(val, val);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; getIntervals() &#123;</span><br><span class="line">        vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; ans;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">const</span> auto&amp; [left, right]: intervals) &#123;</span><br><span class="line">            ans.push_back(&#123;left, right&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="题目补充"><a href="#题目补充" class="headerlink" title="题目补充"></a>题目补充</h3><p>【LeetCode 274】</p>
+<p>【LeetCode 275】</p>
+<p>【LeetCode 33】</p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#数据结构与算法" >
+    <span class="tag-code">数据结构与算法</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/10/11/P%E3%80%81NP%E3%80%81NPC%E3%80%81NP-Hard%E9%97%AE%E9%A2%98%E7%9A%84%E5%8C%BA%E5%88%AB/">
+        <span class="nav-arrow">← </span>
+        
+          P、NP、NPC、NP-Hard问题的区别
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2021/09/04/K8s-%E5%AD%A6%E4%B9%A0/">
+        
+          K8s 学习
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    <!---->
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- utterances START -->
+      <script src="https://utteranc.es/client.js" repo="mars-tian/mars-tian.github.io" issue-term="title" theme="github-light" crossorigin="anonymous" async> </script>
+      <!-- utterances END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%9F%BA%E7%A1%80%E5%88%86%E6%9E%90"><span class="toc-nav-text">基础分析</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%9F%BA%E7%A1%80%E9%A2%98%E7%9B%AE"><span class="toc-nav-text">基础题目</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BA%8C%E6%AE%B5%E6%80%A7"><span class="toc-nav-text">二段性</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E9%A2%98%E7%9B%AE%E8%A1%A5%E5%85%85"><span class="toc-nav-text">题目补充</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2021/07/07/二分法总结/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2022 Content by <a href="https://github.com/Tianchenjiang" target="_blank">Mars Tian</a> | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a></p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

@@ -146,19 +146,19 @@
 <main class="app-body">
   <div id="tag-cloud">
     
-      <a class="tag0" data-name="tag-C++">C++</a>
+      <a class="tag3" data-name="tag-C++">C++</a>
     
       <a class="tag2" data-name="tag-Devops">Devops</a>
     
-      <a class="tag2" data-name="tag-MySQL">MySQL</a>
+      <a class="tag0" data-name="tag-MySQL">MySQL</a>
     
-      <a class="tag1" data-name="tag-随笔">随笔</a>
+      <a class="tag3" data-name="tag-随笔">随笔</a>
     
-      <a class="tag1" data-name="tag-数据结构与算法">数据结构与算法</a>
+      <a class="tag2" data-name="tag-数据结构与算法">数据结构与算法</a>
     
-      <a class="tag0" data-name="tag-机器学习">机器学习</a>
+      <a class="tag2" data-name="tag-机器学习">机器学习</a>
     
-      <a class="tag0" data-name="tag-基础知识">基础知识</a>
+      <a class="tag2" data-name="tag-基础知识">基础知识</a>
     
   </div>
   
@@ -294,6 +294,7 @@
       if (hasLine === 'false') {
         figure.find('.gutter').hide();
       }
+      hljs.configure({useBR: true});
       var lang = figure.attr('class').split(' ')[1] || 'code';
       var codeHtml = $(this).html();
       var codeTag = document.createElement('code');

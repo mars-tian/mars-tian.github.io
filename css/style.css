@@ -577,21 +577,21 @@ p.admonition-title {
 .markdown-content,
 .article-summary {
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: auto;
 }
 .markdown-content pre,
 .article-summary pre,
 .markdown-content code,
 .article-summary code {
   font-family: 'Roboto Mono', Monaco, courier, monospace;
-  font-size: 13px;
+  font-size: 15px;
 }
 @media screen and (max-width: 480px) {
   .markdown-content pre,
   .article-summary pre,
   .markdown-content code,
   .article-summary code {
-    font-size: 12px;
+    font-size: 14px;
   }
 }
 .markdown-content pre .line,
@@ -604,6 +604,7 @@ p.admonition-title {
 .markdown-content p,
 .article-summary p {
   line-height: 1.6em;
+  padding: 8px 0px;
 }
 .markdown-content p code,
 .article-summary p code {
@@ -650,7 +651,7 @@ p.admonition-title {
 .markdown-content blockquote,
 .article-summary blockquote {
   margin: 1em 0;
-  padding: 15px 20px;
+  padding: 10px 20px;
   border-left: 4px solid #42b983;
   background: #f8f8f8;
   border-bottom-right-radius: 2px;
@@ -661,7 +662,7 @@ p.admonition-title {
 .markdown-content ol,
 .article-summary ol {
   overflow: auto;
-  margin: 15px 0;
+  margin: 5px 0;
 }
 .markdown-content ul li,
 .article-summary ul li,

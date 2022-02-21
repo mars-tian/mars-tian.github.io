@@ -399,6 +399,7 @@ char(*) [2] 是一种数组类型，表示指向有两个元素的数组的数�
       if (hasLine === 'false') {
         figure.find('.gutter').hide();
       }
+      hljs.configure({useBR: true});
       var lang = figure.attr('class').split(' ')[1] || 'code';
       var codeHtml = $(this).html();
       var codeTag = document.createElement('code');

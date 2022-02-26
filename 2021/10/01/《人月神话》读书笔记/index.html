@@ -10,7 +10,7 @@
   
   <title>
     
-      为k8s集群配置SSL证书 | Mars&#39;s Blog
+      《人月神话》读书笔记 | Mars&#39;s Blog
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -140,8 +140,8 @@
 </header>
 
     <div id="article-banner">
-  <h2>为k8s集群配置SSL证书</h2>
-  <p class="post-date">2022-01-10</p>
+  <h2>《人月神话》读书笔记</h2>
+  <p class="post-date">2021-10-01</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
   </div>
@@ -149,66 +149,21 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h3 id="方法一：对所有ingress进行配置"><a href="#方法一：对所有ingress进行配置" class="headerlink" title="方法一：对所有ingress进行配置"></a>方法一：对所有ingress进行配置</h3><ol>
-<li>阿里云申请通配符域名</li>
-</ol>
-<p>由于目前还没有交易的情景，并且暂时没有较多用户的敏感信息，目前申请的是域名型证书，保证通信是加密传输即可。参考阿里云文档：<a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/98574.html?spm=a2c4g.11186623.6.603.59a020674FUyXO%EF%BC%88%E5%9F%9F%E5%90%8D%E6%89%80%E6%9C%89%E6%9D%83%E9%AA%8C%E8%AF%81%E9%80%89%E8%87%AA%E5%8A%A8%E9%AA%8C%E8%AF%81%E5%8D%B3%E5%8F%AF%EF%BC%89">https://help.aliyun.com/document_detail/98574.html?spm=a2c4g.11186623.6.603.59a020674FUyXO（域名所有权验证选自动验证即可）</a></p>
-<p>目前申请好的是*.seec.seecoder.cn，这种通配符域名只允许一级子域名，像a.b.seec.seecoder.cn是不符合要求的。</p>
-<ol start="2">
-<li><p>下载nginx版证书，包括.key和.pem文件</p>
-</li>
-<li><p>将证书上传至服务器</p>
-</li>
-<li><p>为需要的服务配置ingress规则</p>
-</li>
-</ol>
-<p>手动配置某个应用的ingress：</p>
-<ul>
-<li>用申请好的证书创建secret：</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create secret tls [secretName]  --cert=[pem文件路径] --key=[key文件路径] --namespace [namespace]</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>修改ingress配置：</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl edit ingress [ingress name] -n [namespace]</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>在spec下加入tls配置：</li>
-</ul>
-<p>secretName对应创建好的secret名，hosts必须和rules下的域名完全匹配</p>
-<p>注意：一个ingress只能用一个secret，然后hosts中的域名必须都被该证书所支持</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">host:</span> <span class="string">seecoder-paas-pool.seec.seecoder.cn</span></span><br><span class="line">    <span class="attr">http:</span></span><br><span class="line">      <span class="attr">paths:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">backend:</span></span><br><span class="line">          <span class="attr">serviceName:</span> <span class="string">environment-1-1</span></span><br><span class="line">  <span class="attr">tls:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">hosts:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">seecoder-paas-pool.seec.seecoder.cn</span></span><br><span class="line">    <span class="attr">secretName:</span> <span class="string">seecoder-paas</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="方法二：配置k8s默认证书"><a href="#方法二：配置k8s默认证书" class="headerlink" title="方法二：配置k8s默认证书"></a>方法二：配置k8s默认证书</h3><p>通过paas为每个应用的ingress增加tls的功能会出现证书不生效，而采用k8s默认证书的情况。</p>
-<p>因此决定配置Nginx默认证书，这里可以参考<a target="_blank" rel="noopener" href="https://docs.rancher.cn/docs/rke/config-options/add-ons/ingress-controllers/_index/">rancher文档</a>。</p>
-<ul>
-<li>首先生成secrets</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create secret tls seecoder-paas  --cert=./certificate/6044117__seec.seecoder.cn.pem --key=./certificate/6044117__seec.seecoder.cn.key --namespace seec -o yaml --dry-run=true &gt; ingress-default-cert.yaml</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>修改启动参数</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl -n ingress-nginx  edit daemonset nginx-ingress-controller </span><br></pre></td></tr></table></figure>
-
-<p>在container的参数中加入<code>- --default-ssl-certificate=seec/seecoder-paas</code>（也就是namespace + 刚刚生成的secret名）</p>
-<ul>
-<li>删除nginx入口控制器pods以让配置生效，k8s会自动重新生成</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl delete pod -l app=ingress-nginx -n ingress-nginx</span><br></pre></td></tr></table></figure>
-
-<p>参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/81268969">https://zhuanlan.zhihu.com/p/81268969</a></p>
+    <section class="markdown-content"><p>&emsp;&emsp;在几年前我已经读过这本软工圣经，时隔四年再次拜读，再结合我在大学期间的开发经历，产生了很多新的认识和思考。本书中很多例子是关于作者所主持的项目，即IBM公司的SYSTEM/360和OS/360项目，尽管它们是上世纪60年代被开发的系统，但其中所包含的软件开发技术和软件项目管理的相关经验和知识，在当今仍然适用。这本书每个章节都精练而又发人深省。我想挑选两个给我印象最深的章节谈谈我的感受和启发。</p>
+<p>&emsp;&emsp;首先是这本书中非常著名的章节，即第二章《人月神话》。作者提出了两个错误的思考方式：第一个是编程人员的乐观主义可能导致过度乐观，第二个是人月这个具有欺骗性的度量单位在暗示人数和时间是可以替换的。然而这种思考方式是有局限性的。只有当任务可分解，并且参与人员不需要相关交流的情况下人数和时间才可以互换。但现实中的项目一般有顺序的限制，并且子任务之间需要沟通和交流。在这个章节作者也提出了Brooks法则，这个法则对于刚接触到软件工程的人来说是非常不能理解的，毕竟对于落后的项目，第一感觉是应该加人手来加快项目进度，但在实际情况中，这样的做法往往由于增加了沟通和培训的负担而导致项目进一步落后。这也给我们一定的启示，在项目的进度安排方面一定要格外进行注意，如果缺乏合理的进度安排，很可能导致项目的滞后。</p>
+<p>&emsp;&emsp;另外一个章节是第十三章节《整体部分》。长期小型系统的开发会让我们的测试意识比较薄弱，当出现问题时才会进行调试。但当系统复杂度提升，规模扩大的时候，以往的开发方法会造成很大的麻烦。在实际的软件开发过程中，需要从设计和测试两方面努力。在设计方面，避免出现没有精确定义的描述，而是用详细的规格说明描述系统，这样能大大减少必须查找的bug数量。在测试方面，尽早的开展单元测试和集成测试，能减少修复bug的代价。现如今，也会采用自动化测试的工具，把测试作为持续集成的一部分，甚至还有一些工具可以自动生成测试用例，比如Evosuite等，极大的简化了编写测试的负担。针对中大型项目，不仅仅是项目功能本身的bug，还有针对负载，效能，压力等的测试，这类主要是对非功能属性的测试，以保障系统的服务质量。</p>
+<p>&emsp;&emsp;我将书中的观点运用于参加过的团队开发经历，尤其是作者在第七章《为什么巴比伦塔会失败》着重强调的清晰的工作文档，明确的组织结构，合理的职责分配是成功的关键，对此我产生了非常强烈的共鸣。我将从我所参加过的小型团队和中型团队展开论述。</p>
+<p>&emsp;&emsp;在一般的课程设计中，都是以小组为单位进行开发，这种属于小型团队的组织结构。通常来说，我们的交流是通过召开线下会议进行当面交流，遇到分歧直接讨论解决，以确保高效率沟通和合作。但在疫情期间，线下会议无法开展，因此我们强化了文档和定期线上会议的重要性，也就是书中所说的非正式途径和工作手册，尤其是文档的重要性。在以往我们更习惯于用代码直接体现需求等的变化，但现在使用不间断的文档维护，当有变更时，及时在文档旁边进行标注。这样一方面是作为沟通的渠道，遇到问题可以先在文档中定位，提高了工作效率；另外一方面作为数据基础和检查列表，每个人都可以从文档中获得项目的状态以及项目需要调整的地方。作者在书中提出了“技术主管作为总指挥，产品负责人充当其左右手”对小型团队是最好的选择，在我们团队中正是如此。技术负责人把握整个项目的设计和实现，当出现技术问题时，根据需要解决或者调整系统设计。也就是说，技术负责人有最终决策的权利，这样能避免出现陷入无休止讨论的情况。我们团队开发出的几个项目都取得了较为不错的成果，本书提出的观点或许能解释其中成功的原因。</p>
+<p>&emsp;&emsp;目前我在导师的团队中从事开发工作，团队规模在十人左右，属于中型团队。与以往课程项目不同，不仅是项目规模，人员规模的扩大，并且开发的项目在上线后还需要后期不断的维护，因此相关要求也更为严格。在刚加入团队时，我体会到了书中所提到的如同焦油坑般的场景。主要有两个困难，首先是相关负责人的离职，并且相关文档不够完善，其次是随着软件规模的扩大，相关非功能属性的要求也随之提高，原有的架构也需要做出很大的调整。面对这样的问题，以书中的经验作为指导，我们采取的主要应对策略有：(1) 重视文档：不仅简化了沟通的负担，也为未来职员离职的情况未雨绸缪。(2) 在开发时候重视变化：唯一不变的就是变化已经是老生常谈了，因此我们在开发时候应该设计可替换的，易修改的接口，便于未来系统的维护和重构。(3)合理的安排计划。每个月开展大会，每周开展小会，总结项目的进展，并对未来的任务进一步的划分和计划。在遇到进度落后计划的情况时，不能一味的加班加人，而是及时对计划做出调整，甚至舍去一些暂时不重要的功能等等。</p>
+<p>&emsp;&emsp;最后我想谈谈我读完这本书的思考。编程能带给我们很多乐趣，无论是用双手改变世界，还是开发出对他人有用的东西，都让我们享受它本身，但它也有其固有的问题，因此编程本身就是一个快乐和烦恼并存的事情。在未来的职业发展道路上，用乐观的态度对待问题，用科学的知识和方法对待问题，这样处理起来才更能得心应手。最后一定记得享受编程的快乐，毕竟它才是支撑我们的源动力。</p>
 </section>
     <!-- Tags START -->
     
       <div class="tags">
         <span>Tags:</span>
         
-  <a href="/tags#Devops" >
-    <span class="tag-code">Devops</span>
+  <a href="/tags#随笔" >
+    <span class="tag-code">随笔</span>
   </a>
 
       </div>
@@ -219,17 +174,17 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2021/11/24/%E8%A7%A3%E5%86%B3%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%A2%ABssh%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3%E9%97%AE%E9%A2%98/">
+      <a class="nav-left" href="/2021/09/04/K8s-%E5%AD%A6%E4%B9%A0/">
         <span class="nav-arrow">← </span>
         
-          解决服务器被ssh暴力破解问题
+          K8s 学习
         
       </a>
     
     
-      <a class="nav-right" href="/2022/01/14/%E7%BC%96%E7%A0%81%E5%8F%91%E5%B1%95%E5%8F%B2/">
+      <a class="nav-right" href="/2021/11/24/%E8%A7%A3%E5%86%B3%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%A2%ABssh%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3%E9%97%AE%E9%A2%98/">
         
-          编码发展史
+          解决服务器被ssh暴力破解问题
         
         <span class="nav-arrow"> →</span>
       </a>
@@ -256,7 +211,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9A%E5%AF%B9%E6%89%80%E6%9C%89ingress%E8%BF%9B%E8%A1%8C%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">方法一：对所有ingress进行配置</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%9A%E9%85%8D%E7%BD%AEk8s%E9%BB%98%E8%AE%A4%E8%AF%81%E4%B9%A6"><span class="toc-nav-text">方法二：配置k8s默认证书</span></a></li></ol>
+      <ol class="nav">none</ol>
     
   </div>
 </aside>
@@ -266,7 +221,7 @@
 
 <script>
   (function () {
-    var url = 'http://yoursite.com/2022/01/10/为k8s集群配置SSL证书/';
+    var url = 'http://yoursite.com/2021/10/01/《人月神话》读书笔记/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({

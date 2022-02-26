@@ -10,7 +10,7 @@
   
   <title>
     
-      解决服务器被ssh暴力破解问题 | Mars&#39;s Blog
+      为k8s集群配置SSL证书 | Mars&#39;s Blog
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -140,8 +140,8 @@
 </header>
 
     <div id="article-banner">
-  <h2>解决服务器被ssh暴力破解问题</h2>
-  <p class="post-date">2021-11-24</p>
+  <h2>为k8s集群配置SSL证书</h2>
+  <p class="post-date">2022-01-10</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
   </div>
@@ -149,48 +149,58 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><p>解决ssh暴力破解，方法有：</p>
-<ul>
-<li>改ssh端口</li>
-<li>禁止root登录，只能通过其他管理员或者用户登录（用户名和密码同时破解规模上升一个数量级）</li>
-<li>只能通过密钥登录</li>
-<li>多次登录错误ban ip</li>
-<li>工具：Fail2Ban <a target="_blank" rel="noopener" href="https://www.ryadel.com/en/centos-ssh-unwanted-failed-login-attempts-fail2ban/">参考</a></li>
-</ul>
-<p>安装：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install epel-release</span><br><span class="line">sudo yum install fail2ban</span><br><span class="line">sudo systemctl enable fail2ban</span><br><span class="line"></span><br><span class="line">vi /etc/fail2ban/jail.local</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">[DEFAULT]</span><br><span class="line"><span class="meta">#</span><span class="bash"> Ban hosts <span class="keyword">for</span> 1 hour after they perform 3 failed login attempts within 10 minutes</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 600s内失败超过3次会ban3600s</span></span><br><span class="line">bantime = 3600</span><br><span class="line">findtime = 600</span><br><span class="line">maxretry = 3</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Never ban the following space-separated IP addresses/masks</span></span><br><span class="line">ignoreip = 127.0.0.1/8</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Override /etc/fail2ban/jail.d/00-firewalld.conf</span> </span><br><span class="line"><span class="meta">#</span><span class="bash"> to ensure that iptables will be used <span class="keyword">for</span> firewall configuration</span></span><br><span class="line">banaction = iptables-multiport</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Choose what to <span class="keyword">do</span> when issuing a ban:</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> $(action_)s : [default]</span> </span><br><span class="line"><span class="meta">#</span><span class="bash">    sets the OS firewall to reject all incoming calls</span></span><br><span class="line"><span class="meta">#</span><span class="bash">    from that IP address <span class="keyword">for</span> the specified amount of time</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> $(action_mw)s : same as above + send and alert e-mail</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> $(action_mwl)s : same as above + adds relevant <span class="built_in">log</span> lines to the e-mail</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> action = $(action_)s</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Send fail2ban alerts &amp; warnings to the following e-mail address</span></span><br><span class="line">destemail = web@ryadel.com</span><br><span class="line">sendername = Fail2Ban</span><br><span class="line">mta = sendmail</span><br><span class="line"></span><br><span class="line">[sshd]</span><br><span class="line"><span class="meta">#</span><span class="bash"> Enables the sshd jail</span></span><br><span class="line">enabled = true</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h3 id="Cascading-rules"><a href="#Cascading-rules" class="headerlink" title="Cascading rules"></a>Cascading rules</h3><p>It’s worth noting that the jail.conf file can also be overridden by any <strong>.conf</strong> file present in the/etc/fail2ban/jail.d/ folder: similarly, the jail.local file we just added can also be overridden by any <strong>.local</strong> file present in that same folder. Here’s the cascading order:</p>
-<ol>
-<li><strong>/etc/fail2ban/jail.conf</strong></li>
-<li><strong>/etc/fail2ban/jail.d/*.conf</strong> (from first to last, sorted alphabetically)</li>
-<li><strong>/etc/fail2ban/jail.local</strong></li>
-<li><strong>/etc/fail2ban/jail.d/*.local</strong> (from first to last, sorted alphabetically)</li>
+    <section class="markdown-content"><h3 id="方法一：对所有ingress进行配置"><a href="#方法一：对所有ingress进行配置" class="headerlink" title="方法一：对所有ingress进行配置"></a>方法一：对所有ingress进行配置</h3><ol>
+<li>阿里云申请通配符域名</li>
 </ol>
-<p>Regardless how you choose to configure it, be sure to restart the <strong>Fail2ban</strong> services after you change any of these files:</p>
-<p>监控：</p>
-<p>查看当前被封的ip：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo fail2ban-client status sshd</span><br></pre></td></tr></table></figure>
+<p>由于目前还没有交易的情景，并且暂时没有较多用户的敏感信息，目前申请的是域名型证书，保证通信是加密传输即可。参考阿里云文档：<a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/98574.html?spm=a2c4g.11186623.6.603.59a020674FUyXO%EF%BC%88%E5%9F%9F%E5%90%8D%E6%89%80%E6%9C%89%E6%9D%83%E9%AA%8C%E8%AF%81%E9%80%89%E8%87%AA%E5%8A%A8%E9%AA%8C%E8%AF%81%E5%8D%B3%E5%8F%AF%EF%BC%89">https://help.aliyun.com/document_detail/98574.html?spm=a2c4g.11186623.6.603.59a020674FUyXO（域名所有权验证选自动验证即可）</a></p>
+<p>目前申请好的是*.seec.seecoder.cn，这种通配符域名只允许一级子域名，像a.b.seec.seecoder.cn是不符合要求的。</p>
+<ol start="2">
+<li><p>下载nginx版证书，包括.key和.pem文件</p>
+</li>
+<li><p>将证书上传至服务器</p>
+</li>
+<li><p>为需要的服务配置ingress规则</p>
+</li>
+</ol>
+<p>手动配置某个应用的ingress：</p>
+<ul>
+<li>用申请好的证书创建secret：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create secret tls [secretName]  --cert=[pem文件路径] --key=[key文件路径] --namespace [namespace]</span><br></pre></td></tr></table></figure>
 
-<p>查看fail2ban日志：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo tail -F /var/log/fail2ban.log</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改ingress配置：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl edit ingress [ingress name] -n [namespace]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在spec下加入tls配置：</li>
+</ul>
+<p>secretName对应创建好的secret名，hosts必须和rules下的域名完全匹配</p>
+<p>注意：一个ingress只能用一个secret，然后hosts中的域名必须都被该证书所支持</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">host:</span> <span class="string">seecoder-paas-pool.seec.seecoder.cn</span></span><br><span class="line">    <span class="attr">http:</span></span><br><span class="line">      <span class="attr">paths:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">backend:</span></span><br><span class="line">          <span class="attr">serviceName:</span> <span class="string">environment-1-1</span></span><br><span class="line">  <span class="attr">tls:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">hosts:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">seecoder-paas-pool.seec.seecoder.cn</span></span><br><span class="line">    <span class="attr">secretName:</span> <span class="string">seecoder-paas</span></span><br></pre></td></tr></table></figure>
 
 
 
+<h3 id="方法二：配置k8s默认证书"><a href="#方法二：配置k8s默认证书" class="headerlink" title="方法二：配置k8s默认证书"></a>方法二：配置k8s默认证书</h3><p>通过paas为每个应用的ingress增加tls的功能会出现证书不生效，而采用k8s默认证书的情况。</p>
+<p>因此决定配置Nginx默认证书，这里可以参考<a target="_blank" rel="noopener" href="https://docs.rancher.cn/docs/rke/config-options/add-ons/ingress-controllers/_index/">rancher文档</a>。</p>
+<ul>
+<li>首先生成secrets</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create secret tls seecoder-paas  --cert=./certificate/6044117__seec.seecoder.cn.pem --key=./certificate/6044117__seec.seecoder.cn.key --namespace seec -o yaml --dry-run=true &gt; ingress-default-cert.yaml</span><br></pre></td></tr></table></figure>
 
+<ul>
+<li>修改启动参数</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl -n ingress-nginx  edit daemonset nginx-ingress-controller </span><br></pre></td></tr></table></figure>
 
+<p>在container的参数中加入<code>- --default-ssl-certificate=seec/seecoder-paas</code></p>
+<ul>
+<li>删除nginx入口控制器pods以让配置生效，k8s会自动重新生成</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl delete pod -l app=ingress-nginx -n ingress-nginx</span><br></pre></td></tr></table></figure>
 
-
-
-
+<p>参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/81268969">https://zhuanlan.zhihu.com/p/81268969</a></p>
 </section>
     <!-- Tags START -->
     
@@ -209,17 +219,17 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2021/09/04/K8s-%E5%AD%A6%E4%B9%A0/">
+      <a class="nav-left" href="/2021/11/24/%E8%A7%A3%E5%86%B3%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%A2%ABssh%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3%E9%97%AE%E9%A2%98/">
         <span class="nav-arrow">← </span>
         
-          K8s 学习
+          解决服务器被ssh暴力破解问题
         
       </a>
     
     
-      <a class="nav-right" href="/2022/01/10/%E4%B8%BAk8s%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AESSL%E8%AF%81%E4%B9%A6/">
+      <a class="nav-right" href="/2022/01/14/%E7%BC%96%E7%A0%81%E5%8F%91%E5%B1%95%E5%8F%B2/">
         
-          为k8s集群配置SSL证书
+          编码发展史
         
         <span class="nav-arrow"> →</span>
       </a>
@@ -246,7 +256,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Cascading-rules"><span class="toc-nav-text">Cascading rules</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9A%E5%AF%B9%E6%89%80%E6%9C%89ingress%E8%BF%9B%E8%A1%8C%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">方法一：对所有ingress进行配置</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%9A%E9%85%8D%E7%BD%AEk8s%E9%BB%98%E8%AE%A4%E8%AF%81%E4%B9%A6"><span class="toc-nav-text">方法二：配置k8s默认证书</span></a></li></ol>
     
   </div>
 </aside>
@@ -256,7 +266,7 @@
 
 <script>
   (function () {
-    var url = 'http://yoursite.com/2021/11/24/解决服务器被ssh暴力破解问题/';
+    var url = 'http://yoursite.com/2022/01/10/为k8s集群配置SSL证书/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({

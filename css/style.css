@@ -150,6 +150,15 @@ h2.article-head {
     font-size: 2em;
   }
 }
+#article-banner span {
+  margin: 10px 0 20px 0;
+  font-size: 1em;
+  color: #fff;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.4s;
+  transition-delay: 0.05s;
+}
 #article-banner .post-date {
   margin: 10px 0 20px 0;
   color: #fff;

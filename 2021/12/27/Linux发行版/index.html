@@ -10,7 +10,7 @@
   
   <title>
     
-      解决服务器被ssh暴力破解问题 | Mars&#39;s Blog
+      Linux发行版 | Mars&#39;s Blog
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -140,8 +140,8 @@
 </header>
 
     <div id="article-banner">
-  <h2>解决服务器被ssh暴力破解问题</h2>
-  <p class="post-date">2021-11-24</p>
+  <h2>Linux发行版</h2>
+  <p class="post-date">2021-12-27</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
   </div>
@@ -149,56 +149,57 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><p>解决ssh暴力破解，方法有：</p>
+    <section class="markdown-content"><p>发行版定义：</p>
+<p>由内核，GNU工具，附加软件和包管理器组成的操作系统。也可能包括桌面和<a target="_blank" rel="noopener" href="https://linux.cn/article-12589-1.html">显示服务器</a></p>
+<p>其实也就是像Debian，Ubuntu这样的公司发行了Linux内核，和其所有必要的软件和应用程序，使其作为一个操作系统使用。发行版还负责提供更新以维护内核和其他应用程序。</p>
+<img src="../../../Documents/学习/笔记合集/img/image-20211002132936197.png" alt="image-20211002132936197" style="zoom:33%;" />
+
+<p>在Linux诞生前，Richard Stallman创建了GNU（GNU is not Unix），GNU实现了很多Unix程序，比如cat，grep，并且开发了gcc和emacs</p>
+<p>在80年代，Unix是专有软件，所以Linux Torvalds开发了一个类Unix的新内核。为了和内核交互，使用了GNU工具。因为使用这些GNU工具，linux的行为也和Unix类似，因此Linux被叫做类Unix系统。</p>
+<p><a target="_blank" rel="noopener" href="https://linux.cn/article-12609-1.html">参考</a></p>
+<p>系统调用将Linux分为内核态和用户态。</p>
+<p>内核态：控制计算机的硬件资源</p>
+<p>用户态：提供应用程序运行的空间</p>
+<p>为了让应用程序访问到内核管理的资源，内核提供了一组通用访问的接口，也就是系统调用</p>
+<p>如下图所示，内核控制和管理硬件，内存，进程调度和管理，文件，设备驱动管理，网络管理</p>
+<img src="../../../Documents/学习/笔记合集/img/image-20211002133818686.png" alt="image-20211002133818686" style="zoom:33%;" />
+
+<p>用户态 -&gt; 内核态的方法：</p>
 <ul>
-<li>改ssh端口</li>
-<li>禁止root登录，只能通过其他管理员或者用户登录（用户名和密码同时破解规模上升一个数量级）</li>
-<li>只能通过密钥登录</li>
-<li>多次登录错误ban ip</li>
-<li>工具：Fail2Ban <a target="_blank" rel="noopener" href="https://www.ryadel.com/en/centos-ssh-unwanted-failed-login-attempts-fail2ban/">参考</a></li>
+<li>系统调用</li>
+<li>异常</li>
+<li>外设中断</li>
 </ul>
-<p>安装：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install epel-release</span><br><span class="line">sudo yum install fail2ban</span><br><span class="line">sudo systemctl enable fail2ban</span><br><span class="line"></span><br><span class="line">vi /etc/fail2ban/jail.local</span><br></pre></td></tr></table></figure>
+<p>库函数：对系统调用进行封装，提供简单的基本接口</p>
+<p>关于CentOS8 Stream：</p>
+<p>Red Hat公司主要负责三个发行版：Red Hat企业版本（RHEL），CentOS，Fedora</p>
+<p>原来的流水线：</p>
+<img src="../../../Documents/学习/笔记合集/img/image-20211002134321301.png" alt="image-20211002134321301" style="zoom:33%;" />
 
+<p>当Linux内核有新功能时，先在Fedora发布，勇于试验的用户先进行体验</p>
+<p>当新特性被评估为稳定后就会加入RHEL发行版（收费）</p>
+<p>CentOS是RHEL去除商标等的免费版</p>
+<p>CentOS Stream引入后：</p>
+<img src="../../../Documents/学习/笔记合集/img/image-20211002134339865.png" alt="image-20211002134339865" style="zoom:33%;" />
 
-
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">[DEFAULT]</span><br><span class="line"><span class="meta">#</span><span class="bash"> Ban hosts <span class="keyword">for</span> 1 hour after they perform 3 failed login attempts within 10 minutes</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 600s内失败超过3次会ban3600s</span></span><br><span class="line">bantime = 3600</span><br><span class="line">findtime = 600</span><br><span class="line">maxretry = 3</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Never ban the following space-separated IP addresses/masks</span></span><br><span class="line">ignoreip = 127.0.0.1/8</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Override /etc/fail2ban/jail.d/00-firewalld.conf</span> </span><br><span class="line"><span class="meta">#</span><span class="bash"> to ensure that iptables will be used <span class="keyword">for</span> firewall configuration</span></span><br><span class="line">banaction = iptables-multiport</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Choose what to <span class="keyword">do</span> when issuing a ban:</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> $(action_)s : [default]</span> </span><br><span class="line"><span class="meta">#</span><span class="bash">    sets the OS firewall to reject all incoming calls</span></span><br><span class="line"><span class="meta">#</span><span class="bash">    from that IP address <span class="keyword">for</span> the specified amount of time</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> $(action_mw)s : same as above + send and alert e-mail</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> $(action_mwl)s : same as above + adds relevant <span class="built_in">log</span> lines to the e-mail</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> action = $(action_)s</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Send fail2ban alerts &amp; warnings to the following e-mail address</span></span><br><span class="line">destemail = web@ryadel.com</span><br><span class="line">sendername = Fail2Ban</span><br><span class="line">mta = sendmail</span><br><span class="line"></span><br><span class="line">[sshd]</span><br><span class="line"><span class="meta">#</span><span class="bash"> Enables the sshd jail</span></span><br><span class="line">enabled = true</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h3 id="Cascading-rules"><a href="#Cascading-rules" class="headerlink" title="Cascading rules"></a>Cascading rules</h3><p>It’s worth noting that the jail.conf file can also be overridden by any <strong>.conf</strong> file present in the/etc/fail2ban/jail.d/ folder: similarly, the jail.local file we just added can also be overridden by any <strong>.local</strong> file present in that same folder. Here’s the cascading order:</p>
-<ol>
-<li><strong>/etc/fail2ban/jail.conf</strong></li>
-<li><strong>/etc/fail2ban/jail.d/*.conf</strong> (from first to last, sorted alphabetically)</li>
-<li><strong>/etc/fail2ban/jail.local</strong></li>
-<li><strong>/etc/fail2ban/jail.d/*.local</strong> (from first to last, sorted alphabetically)</li>
-</ol>
-<p>Regardless how you choose to configure it, be sure to restart the <strong>Fail2ban</strong> services after you change any of these files:</p>
-<p>监控：</p>
-<p>查看当前被封的ip：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo fail2ban-client status sshd</span><br></pre></td></tr></table></figure>
-
-<p>查看fail2ban日志：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo tail -F /var/log/fail2ban.log</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
+<p>现在CentOS的位置处于upstream，改变了原来位于RHEL的下游的状态</p>
+<p>采用滚动发布模型，允许社区对CentOS的贡献应用于下游的RHEL。</p>
+<p>滚动发布：<a target="_blank" rel="noopener" href="https://linux.cn/article-12639-1.html">参考</a></p>
+<p>软件的更新是连续推出的，也就是小而频繁的更新，好处是可以从仓库中获得最新的内核和软件版本。而不是分批的版本，像Ubuntu的xyz版本</p>
+<p>Q：Ubuntu也有每周的更新，这种是否也是滚动发布？</p>
+<p>A：这种更新一般是安全和维护更新，而不是新功能的发布</p>
+<p>滚动发布一般每几个月提供一个新的ISO，也就是ISO刷新，这样新用户就能得到一个更新的Linux发行版</p>
+<p>当正在使用滚动发行版，就不用担心ISO刷新了，因为系统已经和最新发行版对等了。ISO主要是帮助在新系统上安装的人。（假如使用2018年的硬件，安装2021年的Linux，如果没有ISO刷新，不得不安装过去几年的所有更新）</p>
+<p>优点：能获得最新的更新</p>
+<p>缺点：点版本发布一般会进行系统中集成的组件测试，而滚动发布，软件一旦发布就被推出</p>
 </section>
     <!-- Tags START -->
     
       <div class="tags">
         <span>Tags:</span>
         
-  <a href="/tags#Devops" >
-    <span class="tag-code">Devops</span>
+  <a href="/tags#Linux" >
+    <span class="tag-code">Linux</span>
   </a>
 
       </div>
@@ -209,17 +210,17 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2021/10/01/%E3%80%8A%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">
+      <a class="nav-left" href="/2021/11/24/%E8%A7%A3%E5%86%B3%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%A2%ABssh%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3%E9%97%AE%E9%A2%98/">
         <span class="nav-arrow">← </span>
         
-          《人月神话》读书笔记
+          解决服务器被ssh暴力破解问题
         
       </a>
     
     
-      <a class="nav-right" href="/2021/12/27/Linux%E5%8F%91%E8%A1%8C%E7%89%88/">
+      <a class="nav-right" href="/2022/01/10/%E4%B8%BAk8s%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AESSL%E8%AF%81%E4%B9%A6/">
         
-          Linux发行版
+          为k8s集群配置SSL证书
         
         <span class="nav-arrow"> →</span>
       </a>
@@ -246,7 +247,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Cascading-rules"><span class="toc-nav-text">Cascading rules</span></a></li></ol>
+      <ol class="nav">none</ol>
     
   </div>
 </aside>
@@ -256,7 +257,7 @@
 
 <script>
   (function () {
-    var url = 'http://yoursite.com/2021/11/24/解决服务器被ssh暴力破解问题/';
+    var url = 'http://yoursite.com/2021/12/27/Linux发行版/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
